@@ -1,0 +1,39 @@
+<h3 (click)="forUser()">Create User</h3>
+<div *ngIf="userFlag">
+ <label>User's Name: </label>
+ <input type="text" #input placeholder="Enters name" >
+ <button type="submit" (click)="createUser(input.value)" >Create User</button>
+</div>
+<h3 (click)="forBiller()">Create Biller</h3>
+<div *ngIf="billerFlag">
+  <label>Biller's Name: </label>
+  <input type="text" #input placeholder="Enters name" >
+  <button type="submit" (click)="createBiller(input.value)" >Create Biller</button>
+</div>
+<h3 (click)="viewUsers()">View or make bill for existing users</h3>
+<div *ngIf="viewFlag">
+  <div *ngIf="billingFlag">
+    <h4 style="color:green">Make bills for {{second}}</h4>
+
+
+    <form #userLogin="ngForm" (ngSubmit)="onSubmit(userLogin.value)">
+      <label>Select Biller: </label>
+
+      <select name="biller"  [ngModel]="arrayforbillers[0]">
+        <option  *ngFor = "let biller of arrayforbillers" [value]="biller">{{biller}}</option>
+      </select>
+      <label>Bill to be paid: </label>
+
+              <input  placeholder="enter payment" class="input-field" type="number"  name="bill" ngModel>
+
+
+      <button type="submit" >Submit</button>
+       </form>
+
+
+
+  </div>
+  <ul *ngFor = "let user of arrays">
+    <li (click)="billing(user)">{{user}}</li>
+  </ul>
+</div>
