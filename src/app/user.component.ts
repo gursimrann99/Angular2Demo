@@ -91,7 +91,6 @@ export class UserComponent {
           this.payingFlag = true;
         }
     }
-  //  public paidBill = paidBills;
     paid(index:any,value:any) {
       var billToBePaid = [];
       billToBePaid =JSON.parse(localStorage.getItem(value.user.concat('Pay')));
