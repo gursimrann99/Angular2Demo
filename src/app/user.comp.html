@@ -15,17 +15,24 @@
   </ul>
 </div>
 <h3 (click)="userBills()">Tap to view if any bills to be paid by each user</h3>
-<div *ngIf = "billPay">
+<div *ngIf = "billFlag">
   <div *ngIf = "payingFlag">
     <ul *ngFor = "let bill of billToBePaid; let i=index" id= "billpay">
       <label style="color:green" id="userid">Bill {{i+1}} of {{bill.user}}</label>
       <li>Biller: {{bill.biller}}</li>
       <li>Bill: {{bill.bill}}</li><br>
-      <button (click)="paid()">Pay Bill</button>
+      <button (click)="paid(i,bill)">Pay Bill</button>
     </ul>
-
   </div>
   <ul *ngFor = "let user of userArrays" id= "billers">
     <li (click)="payBills(user)">{{user}}</li>
+  </ul>
+</div>
+<h3 (click)=totalBillsPaid()>Tap to view paid bills</h3>
+<div *ngIf = "paidFlag">
+  <ul *ngFor = "let bill of paidList; let i=index" id= "billpay">
+    <li style="color:green">{{i+1}}) Paid by: {{bill.user}}</li>
+    <li>&nbsp;&nbsp;&nbsp; Biller: {{bill.biller}}</li>
+    <li>&nbsp;&nbsp;&nbsp; Bill: {{bill.bill}}</li>
   </ul>
 </div>

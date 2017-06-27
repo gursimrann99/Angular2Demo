@@ -9,6 +9,7 @@ var core_1 = require("@angular/core");
 var userArray = [];
 var register = [];
 var billsToBePaid = [];
+var paidLists = [];
 var UserComponent = (function () {
     function UserComponent() {
         this.userFlag = false;
@@ -18,6 +19,8 @@ var UserComponent = (function () {
         this.billFlag = false;
         this.payingFlag = false;
         this.billToBePaid = billsToBePaid;
+        this.paidFlag = false;
+        this.paidList = paidLists;
     }
     UserComponent.prototype.viewUsers = function () {
         this.userFlag = !this.userFlag;
@@ -40,11 +43,24 @@ var UserComponent = (function () {
         var data = [];
         data = JSON.parse(localStorage.getItem(this.username));
         if (data != null) {
-            data.push(value);
+            for (var i = 0; i < data.length; i++) {
+                if (data[0] == value) {
+                    alert("User already registered with this biller");
+                    break;
+                }
+                else {
+                    data.push(value);
+                    alert("Biller successfully registered with user");
+                    this.registerFlag = false;
+                    break;
+                }
+            }
         }
         else {
             var data = [];
             data.push(value);
+            alert("Biller successfully registered with user");
+            this.registerFlag = false;
         }
         var JSONreadyUsers = JSON.stringify(data);
         localStorage.setItem(this.username, JSONreadyUsers);
@@ -59,13 +75,44 @@ var UserComponent = (function () {
     };
     UserComponent.prototype.payBills = function (value) {
         this.billToBePaid = JSON.parse(localStorage.getItem(value.concat('Pay')));
-        if (this.billToBePaid == null) {
+        if (this.billToBePaid == null || this.billToBePaid.length == 0) {
             alert("No bills generated for " + value);
         }
         else {
             this.payingFlag = true;
         }
-        console.log(this.billToBePaid);
+    };
+    //  public paidBill = paidBills;
+    UserComponent.prototype.paid = function (index, value) {
+        var billToBePaid = [];
+        billToBePaid = JSON.parse(localStorage.getItem(value.user.concat('Pay')));
+        billToBePaid.splice(index, 1);
+        var obj1 = JSON.stringify(billToBePaid);
+        localStorage.setItem(value.user.concat('Pay'), obj1);
+        alert(value.user + "'s' " + value.biller + " bill paid :)");
+        this.payingFlag = false;
+        var paidBill = [];
+        paidBill = JSON.parse(localStorage.getItem('billsPaid'));
+        if (paidBill != null) {
+            paidBill.push(value);
+        }
+        else {
+            var paidBill = [];
+            paidBill.push(value);
+        }
+        var obj2 = JSON.stringify(paidBill);
+        localStorage.setItem('billsPaid', obj2);
+        console.log(paidBill);
+    };
+    UserComponent.prototype.totalBillsPaid = function () {
+        this.paidList = JSON.parse(localStorage.getItem('billsPaid'));
+        if (this.paidList == null) {
+            alert("No bills paid yet");
+        }
+        else {
+            this.paidFlag = true;
+            console.log(this.paidList);
+        }
     };
     return UserComponent;
 }());
